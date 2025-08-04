@@ -1,0 +1,335 @@
+/* =====================================================
+   PRINT STYLES FOR LAPORAN
+   ===================================================== */
+
+@media print {
+    /* Reset and base styles */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Times New Roman', serif;
+        font-size: 12pt;
+        line-height: 1.4;
+        color: #000;
+        background: white !important;
+    }
+    
+    /* Hide non-printable elements */
+    .no-print,
+    .btn,
+    button,
+    .card-header,
+    .alert,
+    .navbar,
+    .sidebar,
+    .footer,
+    .breadcrumb,
+    .pagination,
+    .form-control,
+    .form-select,
+    .input-group,
+    .btn-group {
+        display: none !important;
+    }
+    
+    /* Print header */
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 15px;
+    }
+    
+    .print-header .school-logo {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 10px;
+        display: block;
+    }
+    
+    .print-header .school-name {
+        font-size: 18pt;
+        font-weight: bold;
+        margin: 0;
+        text-transform: uppercase;
+    }
+    
+    .print-header .school-address {
+        font-size: 10pt;
+        margin: 5px 0;
+        color: #666;
+    }
+    
+    .print-header .report-title {
+        font-size: 14pt;
+        font-weight: bold;
+        margin: 10px 0 5px;
+        text-transform: uppercase;
+    }
+    
+    .print-header .report-subtitle {
+        font-size: 10pt;
+        color: #666;
+        margin: 0;
+    }
+    
+    /* Print info */
+    .print-info {
+        display: block !important;
+        margin-bottom: 20px;
+        font-size: 9pt;
+    }
+    
+    .print-info .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    
+    .print-info .info-label {
+        font-weight: bold;
+        min-width: 120px;
+    }
+    
+    /* Cards and containers */
+    .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        margin-bottom: 15px;
+        page-break-inside: avoid;
+    }
+    
+    .card-body {
+        padding: 15px !important;
+    }
+    
+    /* Summary cards */
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .summary-card {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+        background: #f8f9fa !important;
+    }
+    
+    .summary-card .number {
+        font-size: 16pt;
+        font-weight: bold;
+        color: #000;
+    }
+    
+    .summary-card .label {
+        font-size: 8pt;
+        color: #666;
+        margin-top: 5px;
+    }
+    
+    /* Tables */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+        font-size: 9pt;
+    }
+    
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+    }
+    
+    .table th {
+        background: #f8f9fa !important;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .table tbody tr:nth-child(even) {
+        background: #f8f9fa !important;
+    }
+    
+    /* Badges */
+    .badge {
+        border: 1px solid #000;
+        padding: 2px 6px;
+        font-size: 8pt;
+        font-weight: normal;
+        background: white !important;
+        color: #000 !important;
+    }
+    
+    .badge.bg-success {
+        border-color: #28a745;
+    }
+    
+    .badge.bg-danger {
+        border-color: #dc3545;
+    }
+    
+    .badge.bg-warning {
+        border-color: #ffc107;
+    }
+    
+    .badge.bg-info {
+        border-color: #17a2b8;
+    }
+    
+    .badge.bg-primary {
+        border-color: #007bff;
+    }
+    
+    /* Charts */
+    .chart-container {
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+    }
+    
+    .chart-container canvas {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Lists */
+    .list-group {
+        border: 1px solid #ddd;
+    }
+    
+    .list-group-item {
+        border: none;
+        border-bottom: 1px solid #ddd;
+        padding: 8px 0;
+        background: white !important;
+    }
+    
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+    
+    /* Summary footer */
+    .summary-footer {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        background: #f8f9fa !important;
+        font-size: 9pt;
+    }
+    
+    .summary-footer h6 {
+        font-size: 10pt;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .summary-footer ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    
+    .summary-footer li {
+        margin-bottom: 3px;
+    }
+    
+    /* Page breaks */
+    .page-break {
+        page-break-before: always;
+    }
+    
+    .no-break {
+        page-break-inside: avoid;
+    }
+    
+    /* Footer */
+    .print-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 8pt;
+        color: #666;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+        background: white;
+    }
+    
+    /* Specific report styles */
+    .stok-report .item-image {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+    }
+    
+    .peminjaman-report .status-badge {
+        font-weight: bold;
+    }
+    
+    .terlambat-report .days-late {
+        font-weight: bold;
+        color: #dc3545;
+    }
+    
+    .user-report .user-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #ddd;
+        display: inline-block;
+        text-align: center;
+        line-height: 30px;
+        font-size: 8pt;
+        font-weight: bold;
+    }
+    
+    /* Responsive grid for print */
+    .print-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    /* Watermark */
+    .watermark {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 48pt;
+        color: rgba(0,0,0,0.1);
+        pointer-events: none;
+        z-index: 1000;
+    }
+    
+    /* Signature section */
+    .signature-section {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .signature-box {
+        text-align: center;
+        width: 200px;
+    }
+    
+    .signature-line {
+        border-top: 1px solid #000;
+        margin-top: 50px;
+        padding-top: 5px;
+        font-size: 9pt;
+    }
+} 
