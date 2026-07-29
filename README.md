@@ -10,11 +10,13 @@
 ## 🎯 Fitur Utama
 
 ### 👥 Multi-Role Access Control
+
 - **Admin**: Akses penuh ke semua fitur sistem
 - **Petugas**: Mengelola peminjaman dan pengembalian barang
 - **Tamu**: Melihat data barang yang tersedia (tanpa login)
 
 ### 📦 Manajemen Barang
+
 - ✅ CRUD data barang (nama, kode, jumlah, kondisi, lokasi)
 - ✅ Upload foto barang dengan preview
 - ✅ Kategori barang (Elektronik, Furniture, Olahraga, dll)
@@ -23,6 +25,7 @@
 - ✅ Stok real-time dengan alert stok rendah
 
 ### 🔄 Sistem Peminjaman
+
 - ✅ Input data peminjam (nama, kelas, NIS, kontak)
 - ✅ Tracking status peminjaman (Dipinjam, Dikembalikan, Terlambat)
 - ✅ Tanggal pinjam, rencana kembali, dan aktual kembali
@@ -30,13 +33,15 @@
 - ✅ History peminjaman lengkap
 
 ### 📊 Laporan & Analytics
+
 - ✅ Dashboard dengan statistik real-time
 - ✅ Laporan peminjaman dengan filter
 - ✅ Laporan barang terlambat
 - ✅ Laporan pengembalian
-- ✅ Export data (PDF/Excel) - *Coming Soon*
+- ✅ Export data (PDF/Excel) - _Coming Soon_
 
 ### 🎨 User Interface
+
 - ✅ Responsive design (Mobile, Tablet, Desktop)
 - ✅ Modern UI dengan Bootstrap 5
 - ✅ Animasi dan transisi smooth
@@ -46,36 +51,44 @@
 ## 🖼️ Screenshots Demo
 
 ### 🏠 Halaman Utama (Tamu)
+
 ![Halaman Utama](demo/index_tamu.png)
-*Halaman utama untuk tamu yang menampilkan data barang tersedia*
+_Halaman utama untuk tamu yang menampilkan data barang tersedia_
 
 ### 📋 Data Barang Tamu
+
 ![Data Barang Tamu](demo/index_tamu_dataBarang.png)
-*Tampilan data barang dengan foto dan informasi detail*
+_Tampilan data barang dengan foto dan informasi detail_
 
 ### 👨‍💼 Dashboard Admin
+
 ![Dashboard Admin](demo/dashboard_admin.png)
-*Dashboard admin dengan statistik dan grafik*
+_Dashboard admin dengan statistik dan grafik_
 
 ### 📦 Data Barang Admin
+
 ![Data Barang Admin](demo/halaman_dataBarang_admin.png)
-*Halaman manajemen data barang untuk admin*
+_Halaman manajemen data barang untuk admin_
 
 ### 📊 Data Peminjaman Admin
+
 ![Data Peminjaman Admin](demo/dataPeminjaman_admin.png)
-*Halaman pengelolaan data peminjaman*
+_Halaman pengelolaan data peminjaman_
 
 ### 👨‍💼 Dashboard Petugas
+
 ![Dashboard Petugas](demo/dashboard_petugas.png)
-*Dashboard petugas dengan fitur peminjaman*
+_Dashboard petugas dengan fitur peminjaman_
 
 ### 🔄 Kelola Peminjaman Petugas
+
 ![Kelola Peminjaman Petugas](demo/kelolaPeminjaman_petugas.png)
-*Halaman pengelolaan peminjaman untuk petugas*
+_Halaman pengelolaan peminjaman untuk petugas_
 
 ## 🚀 Cara Menjalankan
 
 ### 📋 Prerequisites
+
 - PHP 8.0 atau lebih tinggi
 - MySQL 8.0 atau lebih tinggi
 - Web Server (Apache/Nginx)
@@ -84,18 +97,21 @@
 ### ⚙️ Installation
 
 1. **Clone Repository**
+
 ```bash
 git clone https://github.com/rizkimulyawan/sistem-inventaris-sekolah.git
 cd sistem-inventaris-sekolah
 ```
 
 2. **Setup Database**
+
 ```bash
 # Import database schema
 mysql -u root -p < database/inventaris_sekolah.sql
 ```
 
 3. **Konfigurasi Database**
+
 ```php
 // Edit file config/database.php
 <?php
@@ -108,18 +124,21 @@ return [
 ```
 
 4. **Setup Web Server**
+
 ```bash
 # Untuk Apache, pastikan mod_rewrite aktif
 # Untuk Nginx, konfigurasi sesuai kebutuhan
 ```
 
 5. **Set Permissions**
+
 ```bash
 chmod 755 uploads/
 chmod 644 config/database.php
 ```
 
 6. **Jalankan Aplikasi**
+
 ```bash
 # Buka browser dan akses
 http://localhost/sistem-inventaris-sekolah
@@ -128,11 +147,13 @@ http://localhost/sistem-inventaris-sekolah
 ### 🔐 Default Login
 
 #### Admin
+
 - **Username**: `admin`
 - **Password**: `admin123`
 - **Role**: Full Access
 
 #### Petugas
+
 - **Username**: `petugas`
 - **Password**: `petugas123`
 - **Role**: Peminjaman & Laporan
@@ -140,6 +161,7 @@ http://localhost/sistem-inventaris-sekolah
 ## 🔄 Alur Sistem
 
 ### 📦 Pengelolaan Data Barang
+
 1. **Admin login** ke sistem
 2. **Tambah kategori** dan lokasi jika belum ada
 3. **Input data barang** dengan foto dan detail
@@ -147,6 +169,7 @@ http://localhost/sistem-inventaris-sekolah
 5. **Stok otomatis** terupdate saat peminjaman
 
 ### 🔄 Proses Peminjaman
+
 1. **Petugas login** ke sistem
 2. **Input data peminjam** (nama, kelas, NIS, kontak)
 3. **Pilih barang** yang akan dipinjam
@@ -155,6 +178,7 @@ http://localhost/sistem-inventaris-sekolah
 6. **Stok berkurang** otomatis
 
 ### 📤 Proses Pengembalian
+
 1. **Petugas input** tanggal pengembalian aktual
 2. **Sistem cek** keterlambatan
 3. **Status berubah** menjadi "Dikembalikan"
@@ -162,6 +186,7 @@ http://localhost/sistem-inventaris-sekolah
 5. **History tersimpan** untuk laporan
 
 ### 📊 Pembuatan Laporan
+
 1. **Admin/Petugas** buka menu laporan
 2. **Filter berdasarkan** kategori/lokasi/kondisi/waktu
 3. **Data ditampilkan** dalam format tabel
@@ -173,8 +198,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👨‍💻 Authors
 
-- **Rizki Mulyawan** - *Initial work* - [GitHub](https://github.com/rizkimulyawan)
-- **Klik Koding** - *Development & Support* - [YouTube](https://youtube.com/@klikkoding)
+- **Rizki Mulyawan** - _Initial work_ - [GitHub](https://github.com/rizkimulyawan)
+- **Klik Koding** - _Development & Support_ - [YouTube](https://youtube.com/@klikkoding)
 
 ## 🙏 Acknowledgments
 
@@ -193,4 +218,4 @@ Jika ada pertanyaan atau masalah, silakan:
 
 ---
 
-⭐ **Jika project ini membantu, jangan lupa berikan star di GitHub!** ⭐ 
+⭐ **Jika project ini membantu, jangan lupa berikan star di GitHub!** ⭐
