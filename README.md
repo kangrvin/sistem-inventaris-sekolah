@@ -38,7 +38,7 @@
 - ✅ Laporan peminjaman dengan filter
 - ✅ Laporan barang terlambat
 - ✅ Laporan pengembalian
-- ✅ Export data (PDF/Excel) - _Coming Soon_
+- ✅ Export data (PDF/Excel)
 
 ### 🎨 User Interface
 
@@ -99,7 +99,7 @@ _Halaman pengelolaan peminjaman untuk petugas_
 1. **Clone Repository**
 
 ```bash
-git clone https://github.com/rizkimulyawan/sistem-inventaris-sekolah.git
+git clone https://github.com/NullRvin/sistem-inventaris-sekolah.git
 cd sistem-inventaris-sekolah
 ```
 
@@ -154,8 +154,8 @@ http://localhost/sistem-inventaris-sekolah
 
 #### Petugas
 
-- **Username**: `petugas`
-- **Password**: `petugas123`
+- **Username**: `ervin`
+- **Password**: `haerin@gmail.com`
 - **Role**: Peminjaman & Laporan
 
 ## 🔄 Alur Sistem
@@ -198,8 +198,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👨‍💻 Authors
 
-- **Rizki Mulyawan** - _Initial work_ - [GitHub](https://github.com/rizkimulyawan)
-- **Klik Koding** - _Development & Support_ - [YouTube](https://youtube.com/@klikkoding)
+- **Ervin** - _Initial work_ - [GitHub](https://github.com/rizkimulyawan)
 
 ## 🙏 Acknowledgments
 
@@ -212,9 +211,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Jika ada pertanyaan atau masalah, silakan:
 
-- 📧 Email: rizkimulyawan110404@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/rizkimulyawan/sistem-inventaris-sekolah/issues)
-- 📺 YouTube: [Klik Koding](https://youtube.com/@klikkoding)
+- 📧 Email: ervin.career@gmail.com
+- 🐛 Issues: [GitHub Issues](https://github.com/NullRvin/sistem-inventaris-sekolah/issues)
 
 ---
 

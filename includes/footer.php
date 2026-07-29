@@ -60,7 +60,7 @@
             <div class="footer-bottom">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <p class="mb-0">&copy; 2025 <a href="https://youtube.com/@klikkoding?si=rDnT-8jmno-88mx2" target="_blank" class="text-decoration-none">Klik Koding</a>. All rights reserved.</p>
+                        <p class="mb-0">&copy; 2025 <a href="#" target="_blank" class="text-decoration-none">RvinDev</a>. All rights reserved.</p>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <p class="mb-0">

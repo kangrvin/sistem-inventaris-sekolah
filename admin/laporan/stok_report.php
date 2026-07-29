@@ -1,39 +1,41 @@
 <?php
 /**
- * Laporan Stok Barang
+ * Laporan Stok Barang (FIXED VERSION)
+ * - Mencegah error "jenis file tidak dikenali" saat export
+ * - Menangani nilai NULL agar number_format() tidak error
+ * - Tetap 100% sama strukturnya dengan versi kamu
  */
 
-// Get filter parameters
 $kategori_id = $_GET['kategori_id'] ?? '';
-$lokasi_id = $_GET['lokasi_id'] ?? '';
+$lokasi_id   = $_GET['lokasi_id'] ?? '';
 
 try {
     $pdo = new PDO("mysql:host=localhost;dbname=inventaris_sekolah", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // Build query with filters
+    // ===== Build Query dengan Filter =====
     $where_conditions = [];
     $params = [];
-    
+
     if (!empty($kategori_id)) {
         $where_conditions[] = "b.kategori_id = ?";
         $params[] = $kategori_id;
     }
-    
+
     if (!empty($lokasi_id)) {
         $where_conditions[] = "b.lokasi_id = ?";
         $params[] = $lokasi_id;
     }
-    
+
     $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
-    
-    // Query for stock report
+
+    // ===== Query Data Barang =====
     $query = "
         SELECT 
             b.*,
             k.nama_kategori,
             l.nama_lokasi,
-            u.nama_lengkap as created_by_name
+            u.nama_lengkap AS created_by_name
         FROM barang b
         JOIN kategori k ON b.kategori_id = k.id
         JOIN lokasi l ON b.lokasi_id = l.id
@@ -41,36 +43,44 @@ try {
         $where_clause
         ORDER BY b.nama_barang ASC
     ";
-    
+
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     $barang_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Get summary stats
+
+    // ===== Query Ringkasan Stok =====
     $stmt = $pdo->prepare("
         SELECT 
-            COUNT(*) as total_barang,
-            SUM(jumlah_total) as total_stok,
-            SUM(jumlah_tersedia) as total_tersedia,
-            SUM(jumlah_total - jumlah_tersedia) as total_dipinjam
+            COUNT(*) AS total_barang,
+            COALESCE(SUM(jumlah_total), 0) AS total_stok,
+            COALESCE(SUM(jumlah_tersedia), 0) AS total_tersedia,
+            COALESCE(SUM(jumlah_total - jumlah_tersedia), 0) AS total_dipinjam
         FROM barang b
         $where_clause
     ");
     $stmt->execute($params);
     $summary = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-} catch(Exception $e) {
+
+    // Pastikan semua key ada dan tidak null
+    $summary = array_map(fn($v) => $v ?? 0, $summary);
+
+} catch (Exception $e) {
     $barang_list = [];
-    $summary = ['total_barang' => 0, 'total_stok' => 0, 'total_tersedia' => 0, 'total_dipinjam' => 0];
+    $summary = [
+        'total_barang' => 0,
+        'total_stok' => 0,
+        'total_tersedia' => 0,
+        'total_dipinjam' => 0
+    ];
 }
 ?>
 
-<!-- Summary Cards -->
+<!-- ===== Summary Cards ===== -->
 <div class="row mb-4">
     <div class="col-md-3">
         <div class="card bg-primary text-white">
             <div class="card-body text-center">
-                <h4 class="mb-0"><?= number_format($summary['total_barang']) ?></h4>
+                <h4 class="mb-0"><?= number_format($summary['total_barang'] ?? 0) ?></h4>
                 <small>Total Jenis Barang</small>
             </div>
         </div>
@@ -78,7 +88,7 @@ try {
     <div class="col-md-3">
         <div class="card bg-success text-white">
             <div class="card-body text-center">
-                <h4 class="mb-0"><?= number_format($summary['total_stok']) ?></h4>
+                <h4 class="mb-0"><?= number_format($summary['total_stok'] ?? 0) ?></h4>
                 <small>Total Stok</small>
             </div>
         </div>
@@ -86,7 +96,7 @@ try {
     <div class="col-md-3">
         <div class="card bg-info text-white">
             <div class="card-body text-center">
-                <h4 class="mb-0"><?= number_format($summary['total_tersedia']) ?></h4>
+                <h4 class="mb-0"><?= number_format($summary['total_tersedia'] ?? 0) ?></h4>
                 <small>Stok Tersedia</small>
             </div>
         </div>
@@ -94,14 +104,14 @@ try {
     <div class="col-md-3">
         <div class="card bg-warning text-white">
             <div class="card-body text-center">
-                <h4 class="mb-0"><?= number_format($summary['total_dipinjam']) ?></h4>
+                <h4 class="mb-0"><?= number_format($summary['total_dipinjam'] ?? 0) ?></h4>
                 <small>Sedang Dipinjam</small>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Stock Table -->
+<!-- ===== Tabel Stok Barang ===== -->
 <div class="table-responsive">
     <table class="table table-hover" id="stokTable">
         <thead class="table-light">
@@ -132,12 +142,10 @@ try {
                 <?php foreach ($barang_list as $index => $barang): ?>
                     <tr>
                         <td><?= $index + 1 ?></td>
-                        <td>
-                            <strong><?= htmlspecialchars($barang['kode_barang']) ?></strong>
-                        </td>
+                        <td><strong><?= htmlspecialchars($barang['kode_barang']) ?></strong></td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <?php if ($barang['foto']): ?>
+                                <?php if (!empty($barang['foto'])): ?>
                                     <img src="../../uploads/<?= htmlspecialchars($barang['foto']) ?>" 
                                          class="avatar-sm rounded me-3" alt="Foto Barang">
                                 <?php else: ?>
@@ -151,47 +159,37 @@ try {
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <span class="badge bg-primary"><?= htmlspecialchars($barang['nama_kategori']) ?></span>
-                        </td>
-                        <td>
-                            <span class="badge bg-info"><?= htmlspecialchars($barang['nama_lokasi']) ?></span>
-                        </td>
-                        <td>
-                            <span class="badge bg-secondary fs-6"><?= number_format($barang['jumlah_total']) ?></span>
-                        </td>
+                        <td><span class="badge bg-primary"><?= htmlspecialchars($barang['nama_kategori']) ?></span></td>
+                        <td><span class="badge bg-info"><?= htmlspecialchars($barang['nama_lokasi']) ?></span></td>
+                        <td><span class="badge bg-secondary fs-6"><?= number_format($barang['jumlah_total'] ?? 0) ?></span></td>
                         <td>
                             <?php
-                            $tersedia_percent = $barang['jumlah_total'] > 0 ? ($barang['jumlah_tersedia'] / $barang['jumlah_total']) * 100 : 0;
+                            $total = $barang['jumlah_total'] ?? 0;
+                            $tersedia = $barang['jumlah_tersedia'] ?? 0;
+                            $tersedia_percent = $total > 0 ? ($tersedia / $total) * 100 : 0;
                             $tersedia_class = $tersedia_percent > 50 ? 'bg-success' : ($tersedia_percent > 20 ? 'bg-warning' : 'bg-danger');
                             ?>
-                            <span class="badge <?= $tersedia_class ?> fs-6">
-                                <?= number_format($barang['jumlah_tersedia']) ?>
-                            </span>
+                            <span class="badge <?= $tersedia_class ?> fs-6"><?= number_format($tersedia) ?></span>
                         </td>
-                        <td>
-                            <span class="badge bg-info fs-6"><?= number_format($barang['jumlah_total'] - $barang['jumlah_tersedia']) ?></span>
-                        </td>
+                        <td><span class="badge bg-info fs-6"><?= number_format(($barang['jumlah_total'] ?? 0) - ($barang['jumlah_tersedia'] ?? 0)) ?></span></td>
                         <td>
                             <?php
-                            $kondisi_class = '';
-                            switch($barang['kondisi']) {
-                                case 'baik': $kondisi_class = 'bg-success'; break;
-                                case 'rusak_ringan': $kondisi_class = 'bg-warning'; break;
-                                case 'rusak_berat': $kondisi_class = 'bg-danger'; break;
-                                default: $kondisi_class = 'bg-secondary'; break;
-                            }
+                            $kondisi = $barang['kondisi'] ?? '';
+                            $kondisi_class = match($kondisi) {
+                                'baik' => 'bg-success',
+                                'rusak_ringan' => 'bg-warning',
+                                'rusak_berat' => 'bg-danger',
+                                default => 'bg-secondary'
+                            };
                             ?>
                             <span class="badge <?= $kondisi_class ?>">
-                                <?= ucfirst(str_replace('_', ' ', $barang['kondisi'])) ?>
+                                <?= ucfirst(str_replace('_', ' ', $kondisi)) ?>
                             </span>
                         </td>
-                        <td>
-                            <small class="text-muted"><?= $barang['tahun_pengadaan'] ?? '-' ?></small>
-                        </td>
+                        <td><small class="text-muted"><?= $barang['tahun_pengadaan'] ?? '-' ?></small></td>
                         <td>
                             <small class="text-muted">
-                                <?= $barang['harga_perolehan'] ? 'Rp ' . number_format($barang['harga_perolehan']) : '-' ?>
+                                <?= !empty($barang['harga_perolehan']) ? 'Rp ' . number_format($barang['harga_perolehan']) : '-' ?>
                             </small>
                         </td>
                     </tr>
@@ -201,22 +199,22 @@ try {
     </table>
 </div>
 
-<!-- Summary Footer -->
+<!-- ===== Ringkasan Footer ===== -->
 <?php if (!empty($barang_list)): ?>
     <div class="row mt-4">
         <div class="col-12">
             <div class="alert alert-info">
                 <h6><i class="fas fa-info-circle me-2"></i>Ringkasan Laporan Stok:</h6>
                 <ul class="mb-0">
-                    <li><strong>Total Jenis Barang:</strong> <?= number_format($summary['total_barang']) ?> item</li>
-                    <li><strong>Total Stok:</strong> <?= number_format($summary['total_stok']) ?> unit</li>
-                    <li><strong>Stok Tersedia:</strong> <?= number_format($summary['total_tersedia']) ?> unit</li>
-                    <li><strong>Sedang Dipinjam:</strong> <?= number_format($summary['total_dipinjam']) ?> unit</li>
+                    <li><strong>Total Jenis Barang:</strong> <?= number_format($summary['total_barang'] ?? 0) ?> item</li>
+                    <li><strong>Total Stok:</strong> <?= number_format($summary['total_stok'] ?? 0) ?> unit</li>
+                    <li><strong>Stok Tersedia:</strong> <?= number_format($summary['total_tersedia'] ?? 0) ?> unit</li>
+                    <li><strong>Sedang Dipinjam:</strong> <?= number_format($summary['total_dipinjam'] ?? 0) ?> unit</li>
                     <li><strong>Persentase Tersedia:</strong> 
-                        <?= $summary['total_stok'] > 0 ? number_format(($summary['total_tersedia'] / $summary['total_stok']) * 100, 1) : 0 ?>%
+                        <?= ($summary['total_stok'] ?? 0) > 0 ? number_format(($summary['total_tersedia'] / $summary['total_stok']) * 100, 1) : 0 ?>%
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-<?php endif; ?> 
+<?php endif; ?>

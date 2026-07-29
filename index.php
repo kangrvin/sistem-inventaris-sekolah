@@ -304,9 +304,11 @@ require_once 'includes/header.php';
                                 
                                 <!-- Button Hubungi Petugas -->
                                 <div class="d-grid mt-3">
-                                    <button class="btn btn-outline-primary btn-sm">
+                                    <a href="https://wa.me/6282120083067?text=Halo%20saya%20ingin%20meminjam%20barang%20<?= urlencode($barang['nama_barang']) ?>%20(%20<?= urlencode($barang['kode_barang']) ?>%20)%20yang%20tersedia%20di%20Sistem%20Inventaris%20Sekolah." 
+                                            target="_blank" 
+                                            class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-phone me-2"></i>Hubungi Petugas untuk Pinjam
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>

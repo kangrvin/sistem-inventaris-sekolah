@@ -324,14 +324,14 @@ $flash = getFlashMessage();
                         </h5>
                     </div>
                     <div class="col-md-6 col-12 text-md-end">
-                        <div class="btn-group" role="group">
+                        <!-- <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="exportData('excel')">
                                 <i class="fas fa-file-excel me-1"></i><span class="d-none d-md-inline">Excel</span>
                             </button>
                             <button type="button" class="btn btn-outline-secondary btn-sm" onclick="exportData('pdf')">
                                 <i class="fas fa-file-pdf me-1"></i><span class="d-none d-md-inline">PDF</span>
                             </button>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

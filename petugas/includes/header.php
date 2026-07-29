@@ -659,7 +659,7 @@ $user_email = $_SESSION['email'];
         
         <div class="sidebar-footer" style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
             <a href="https://youtube.com/@klikkoding?si=rDnT-8jmno-88mx2" target="_blank" class="text-white text-decoration-none">
-                <small><i class="fas fa-code me-1"></i>Klik Koding</small>
+                <small><i class="fas fa-code me-1"></i>RvinDev</small>
             </a>
         </div>
     </div>

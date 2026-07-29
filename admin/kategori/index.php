@@ -259,28 +259,24 @@ $offset = ($page - 1) * $limit;
 try {
     $pdo = new PDO("mysql:host=localhost;dbname=inventaris_sekolah", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Query untuk data kategori
-    $where_conditions = [];
+
+    // --- 🔧 FIXED: Logika pencarian ---
     $params = [];
-    
+    $where_clause = "";
+
     if (!empty($search)) {
-        $where_conditions[] = "(nama_kategori LIKE ? OR deskripsi LIKE ?)";
-        $search_param = "%$search%";
-        $params[] = $search_param;
-        $params[] = $search_param;
+        $where_clause = "WHERE k.nama_kategori LIKE :search OR k.deskripsi LIKE :search";
+        $params[':search'] = "%" . $search . "%";
     }
-    
-    $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
-    
-    // Query untuk total data
-    $count_query = "SELECT COUNT(*) as total FROM kategori $where_clause";
+
+    // --- Hitung total data ---
+    $count_query = "SELECT COUNT(*) as total FROM kategori k $where_clause";
     $stmt = $pdo->prepare($count_query);
     $stmt->execute($params);
     $total_records = $stmt->fetch()['total'];
     $total_pages = ceil($total_records / $limit);
-    
-    // Query untuk data kategori dengan join ke barang
+
+    // --- Ambil data kategori + jumlah barang ---
     $query = "
         SELECT 
             k.*,
@@ -290,18 +286,29 @@ try {
         $where_clause
         GROUP BY k.id
         ORDER BY k.nama_kategori ASC
-        LIMIT $limit OFFSET $offset
+        LIMIT :limit OFFSET :offset
     ";
-    
+
     $stmt = $pdo->prepare($query);
-    $stmt->execute($params);
+
+    // Bind parameter pencarian
+    if (!empty($search)) {
+        $stmt->bindValue(':search', "%" . $search . "%", PDO::PARAM_STR);
+    }
+
+    // Bind limit dan offset
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+    $stmt->execute();
     $kategori_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-} catch(Exception $e) {
+
+} catch (Exception $e) {
     $kategori_list = [];
     $total_records = 0;
     $total_pages = 0;
 }
+
 ?>
 
 <!-- Header Section -->

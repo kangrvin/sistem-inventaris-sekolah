@@ -32,11 +32,21 @@ try {
                         <h2 class="mb-0"><i class="fas fa-cogs me-2"></i>Pengaturan Sistem</h2>
                         <p class="text-muted mb-0">Kelola pengaturan sistem inventaris sekolah</p>
                     </div>
-                    <div>
-                        <a href="edit.php" class="btn btn-primary">
-                            <i class="fas fa-edit me-2"></i>Edit Pengaturan
-                        </a>
-                    </div>
+                    <div class="d-flex gap-2">
+    <a href="edit.php" class="btn btn-primary">
+        <i class="fas fa-edit me-2"></i>Edit Pengaturan
+    </a>
+    <a href="backup.php" class="btn btn-success">
+        <i class="fas fa-database me-2"></i>Backup DB
+    </a>
+    <form action="restore.php" method="POST" enctype="multipart/form-data" class="d-inline">
+        <label for="restoreFile" class="btn btn-warning mb-0">
+            <i class="fas fa-upload me-2"></i>Restore DB
+        </label>
+        <input type="file" id="restoreFile" name="sql_file" accept=".sql" style="display:none" onchange="this.form.submit()">
+    </form>
+</div>
+
                 </div>
             </div>
         </div>
